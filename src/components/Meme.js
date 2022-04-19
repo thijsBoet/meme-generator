@@ -7,8 +7,16 @@ const Meme = () => {
 	const [meme, setMeme] = useState({
 		topText: '',
 		bottomText: '',
-		randomImg: 'https://i.imgflip.com/1bij.jpg',
+		randomImage: 'https://i.imgflip.com/1bij.jpg',
 	});
+
+	const handleChange = event => {
+		const { name, value } = event.target;
+		setMeme(prevMeme => ({
+			...prevMeme,
+			[name]: value,
+		}));
+	}
 
 	const getMemeImage = e => {
 		e.preventDefault();
@@ -16,32 +24,41 @@ const Meme = () => {
 		const randomIndex = Math.floor(Math.random() * memesArray.length);
 		const url = memesArray[randomIndex].url;
 
-		console.log(meme)
 
 		setMeme(prevMeme => ({
 			...prevMeme,
-			randomImg: url,
+			randomImage: url,
 		}));
 	};
 	
 	return (
 		<main>
-			<form className='form'>
-				<input className='form--input' type='text' placeholder='top' />
-				<input className='form--input' type='text' placeholder='bottom' />
-				<button
-					onClick={e => getMemeImage(e)}
-					className='form--button'
-					type='submit'
-				>
-					Get a new meme image
+			<div className='form'>
+				<input
+					value={meme.topText}
+					onChange={handleChange}
+					name='topText'
+					type='text'
+					placeholder='Top text'
+					className='form--input'
+				/>
+				<input
+					value={meme.bottomText}
+					onChange={handleChange}
+					name='bottomText'
+					type='text'
+					placeholder='Bottom text'
+					className='form--input'
+				/>
+				<button className='form--button' onClick={getMemeImage}>
+					Get a new meme image 🖼
 				</button>
-			</form>
-			<img
-				className='meme--image'
-				src={meme.randomImg}
-				alt='meme'
-			/>
+			</div>
+			<div className='meme'>
+				<img src={meme.randomImage} className='meme--image' alt='meme' />
+				<h2 className='meme--text top'>{meme.topText}</h2>
+				<h2 className='meme--text bottom'>{meme.bottomText}</h2>
+			</div>
 		</main>
 	);
 };
